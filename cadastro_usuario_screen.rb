@@ -25,8 +25,13 @@ class CadastroUsuarioScreen
         wait{find_element(class: @cpf_nao_cadastrado).send_keys(LOGIN[:cpf_nao_cadastrado_ios])}
         sleep 1
     end
+    
+    def cpf_nao_cadastrado
+        wait{find_element(class: @cpf_nao_cadastrado).send_keys(LOGIN[:cpf_nao_cadastrado_ios])}
+        sleep 1
+    end
 
-    def cadastrar_usuario
+def cadastrar_usuariodfjdshfdsjfhksjldfsadl;fjkldsajfas;fjkl;sadfjkldsfjiojeojwiofneroin
         wait{find_element(class: @botao_cadastrar_usuario).click}
         sleep 1
     end
