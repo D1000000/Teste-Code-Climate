@@ -1,79 +1,97 @@
 # coding: utf-8
-# language: pt
+######### DADO #########
 
-Dado("que naveguei até a tela Faz do seu jeito") do
-   @home_faz_do_seu_jeito = HomeFazDoSeuJeitoScreen.new
-   @cadastro_de_usuario = CadastroUsuarioScreen.new
-   fail "Não foi possível visualizar a home faz do seu jeito" unless @home_faz_do_seu_jeito.acessar_home_faz_do_seu_jeito
+Dado(/^(?:que |)(?:posso ver a|estou na|esteja na) tela home Faz do seu jeito$/) do
+  @page = page(HomeFazDoSeuJeitoScreen).await(timeout: 5)
 end
 
-Quando("aciono o login da aplicacao") do
-    fail "Não foi possível fazer o login" unless @home_faz_do_seu_jeito.botao_login
+#pode utilizar este step na home para acessar o leitor
+# Dado(/^que acesse a opção de Leitor de preço$/) do
+#   @page.touch_card_scan
+# end
+
+######### QUANDO #########
+
+Quando(/^(?:que |)(?:acessar|acessei) a opção de card de ofertas$/) do
+  @page.touch_card_ofertas
 end
 
-Quando("selecionar a opção de acesso à Minha conta") do
-   fail "Não foi possível clicar no login" unless @home_faz_do_seu_jeito.acessar_login
+Quando(/^(?:que |)(?:acessar|acessei) a opção de card de lojas$/) do
+  @page.touch_card_lojas
+  @page.wait_for_progress
 end
 
-Quando("acessar a chamada de marketing para autenticação") do
-   fail "Não foi possível clicar no login" unless @home_faz_do_seu_jeito.acessar_chamada_marketing   
+Quando(/^(?:que |)(?:acessar|acessei) a opção de card de scan de preço$/) do
+  steps'E que estou na tela de Mais Carrefour'
+  @page.touch_card_scan
 end
 
-Quando("selecionar a opção de acesso às informações sobre o Programa de descontos") do
-   fail "Não foi possível visualizar o Programa de descontos" unless @home_faz_do_seu_jeito.programa_de_descontos   
+Quando(/^(?:que |)(?:acessar|acessei) a opção de card de canais de atendimento$/) do
+  @page.drag_until_element_is_visible(:baixo, @page.card_canais_atendimento)
+  @page.touch_card_canais_atendimento
 end
 
-Quando("selecionar a opção de voltar") do
-   fail "Não foi possível realizar a ação de voltar" unless @home_faz_do_seu_jeito.botao_voltar
+Quando(/^(?:que |)(?:acessar|acessei) a opção de ver as informações Sobre o App$/) do
+  @page.drag_to :baixo
+  @page.touch_card_sobre_app
 end
 
-Quando("acessar a opção de ver as informações Sobre o App") do
-   fail "Não foi possível visualizar a aba sobre" unless @home_faz_do_seu_jeito.acessar_sobre    
+Quando(/^que acessei a tela de canais de atendimento$/) do
+  steps 'E acessei a opção de card de canais de atendimento
+         E posso ver a tela de canais de atendimento'
 end
 
-Quando("informo a senha") do
-   fail "Não foi possível cadastrar a senha" unless @home_faz_do_seu_jeito.inserir_senha_login  
+Quando(/^que acessei a tela de informações Sobre o App$/) do
+  steps 'E acessei a opção de ver as informações Sobre o App
+         E posso ver a tela de informações Sobre o App'
 end
 
-Quando("finalizo o login") do
-   fail "Erro ao clicar no botão entrar do login" unless @home_faz_do_seu_jeito.botao_entrar_login  
+Quando(/^(?:selecionar|seleciono|selecionei) a opção de acesso a Minhas compras$/) do
+  @page.drag_until_element_is_visible(:baixo, @page.acesso_minhas_compras)
+  @page.touch_acesso_minhas_compras
+  @page.wait_for_progress
 end
 
-Quando("acessar a opção de FAQ") do
-       fail "Erro ao clicar no na aba de FAQ" unless @home_faz_do_seu_jeito.acessar_FAQ  
+Quando(/^(?:selecionar|selecionei) a opção de acesso às informações sobre o Programa de benefícios$/) do
+  steps 'E estou na tela home Faz do seu jeito'
+  @page.drag_until_element_is_visible(:baixo, @page.acesso_programa_beneficios)
+  @page.touch_acesso_programa_beneficios
+  @page.wait_for_progress
 end
 
-Quando("acessar a opção de card de canais de atendimento") do
-       fail "Erro ao clicar no na aba de canais de atendimento" unless @home_faz_do_seu_jeito.acessar_canais_atendimento      
+Quando(/^(?:acessar|acessei) a opção de FAQ$/) do
+  @page.drag_until_element_is_visible(:baixo, @page.acesso_faq)
+  @page.touch_acesso_faq
 end
 
-Então("posso visualizar a tela de autenticação") do
-   fail "Não foi possível visualizar a tela de login" unless @home_faz_do_seu_jeito.validar_tela_login
+Quando(/^(?:que |)(?:acessei|acessar) a tela de informações de FAQ$/) do
+  steps 'E acessei a opção de FAQ
+         E posso ver a tela de informações de FAQ'
 end
 
-Então("posso ver a tela de autenticação") do
+######### ENTãO #########
+
+Então(/^posso ver as ofertas correspondentes à loja da seção$/) do
+  steps 'E acessar a opção de card de ofertas
+         E posso ver as ofertas da loja selecionada na seção'
 end
 
-Então("posso ver a opção de acesso ao Cartão Carrefour") do
-   fail "Não foi possível visualizar o campo de cartão Carrefour" unless @home_faz_do_seu_jeito.validar_tela_cartao_carrefour  
+Então(/^posso ver a opção de acesso ao Cartão Carrefour$/) do
+  @page.card_cartao_carrefour_visible?
 end
 
-Então("posso visualizar a tela de informações sobre o Programa de descontos") do
-       fail "Não foi possível visualizar o programa de descontos" unless @home_faz_do_seu_jeito.validar_programa_de_desconto  
+Então(/^posso voltar para a tela 'Faz do seu jeito'$/) do
+  steps 'E estou na tela home Faz do seu jeito'
 end
 
-Então("posso ver a tela home Faz do seu jeito") do
-   fail "Não foi possível visualizar a home faz do seu jeito ao voltar" unless @home_faz_do_seu_jeito.validar_home_faz_do_seu_jeito      
+Então(/^posso visualizar na tela as minhas duas últimas compras realizadas$/) do
+  fail unless @page.posso_ver_ultimas_compras? HOME_FAZ_DO_SEU_JEITO[:qtde_compras_exibidas]
 end
 
-Então("posso visualizar a tela de informações Sobre o App") do
-       fail "Não foi possível visualizar a aba Sobre" unless @home_faz_do_seu_jeito.validar_sobre      
+Então(/^devo ser informado\(a\) que ainda não tenho compras para serem exibidas$/) do
+  fail unless @page.historico_compras_vazio_visible?
 end
 
-Então("posso visualizar a tela de informações de FAQ") do
-      fail "Não foi possível visualizar a aba de FAQ" unless @home_faz_do_seu_jeito.validar_FAQ      
-end
-
-Então("posso visualizar a tela de canais de atendimento") do
-       fail "Erro ao visualizar a aba de canais de atendimento" unless @home_faz_do_seu_jeito.validar_canais_atendimento  
+Então(/^não posso visuaalizar a opção de FAQ$/) do
+  fail if @page.acesso_faq_visible?
 end
